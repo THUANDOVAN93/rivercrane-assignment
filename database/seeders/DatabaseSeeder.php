@@ -15,11 +15,37 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $adminRole = Role::create(['name' => 'admin']);
+        $customerRole = Role::create(['name' => 'customer']);
+        $editorRole = Role::create(['name' => 'editor']);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $adminUser = User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
         ]);
+
+        $adminUser->roles()->attach($adminRole);
+
+        $customerUser = User::factory()->create([
+            'name' => 'Customer',
+            'email' => 'customer@example.com',
+        ]);
+
+        $customerUser->roles()->attach($customerRole);
+
+        $editorUser = User::factory()->create([
+            'name' => 'Editor',
+            'email' => 'editor@example.com',
+        ]);
+
+        $editorUser->roles()->attach($editorRole);
+
+        $customerEditorUser = User::factory()->create([
+            'name' => 'Author/Editor',
+            'email' => 'ae@example.com',
+        ]);
+
+        $customerEditorUser->roles()->attach($customerRole);
+        $customerEditorUser->roles()->attach($editorRole);
     }
 }
