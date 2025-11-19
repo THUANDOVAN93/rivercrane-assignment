@@ -22,13 +22,18 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request)
     {
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $token = $request->user()->createToken('Bearer');
+
+        return response()->json([
+            'access_token' => $token->plainTextToken,
+            'token_type' => 'Bearer',
+        ]);
     }
 
     /**
